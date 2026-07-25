@@ -14,7 +14,9 @@ const initSockets = require("./sockets");
 const app = express();
 const server = http.createServer(app);
 
-const allowedOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
+const allowedOrigins = (
+  process.env.CLIENT_ORIGIN || "http://localhost:5173,https://project-next-lovat.vercel.app"
+)
   .split(",")
   .map((o) => o.trim());
 
