@@ -20,7 +20,7 @@ export default function Register() {
       await register(name, email, password);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Couldn't create your account. Try again.");
+      setError(err.response?.data?.message || err.userMessage || "Couldn't create your account. Try again.");
     } finally {
       setLoading(false);
     }
