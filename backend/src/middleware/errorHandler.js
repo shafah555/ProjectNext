@@ -11,6 +11,12 @@ function errorHandler(err, req, res, next) {
   if (err.code === "23503") {
     return res.status(400).json({ message: "Related record not found." });
   }
+  if (err.code === "42P01") {
+    return res.status(500).json({
+      message:
+        "Database tables aren't set up yet. Run `npm run db:migrate` in backend/ to create them.",
+    });
+  }
 
   const status = err.status || 500;
   res.status(status).json({

@@ -1,11 +1,11 @@
 const { Pool } = require("pg");
 
-// Supabase requires SSL. rejectUnauthorized:false keeps this working
-// without needing to install Supabase's CA bundle.
+// Neon (and most managed Postgres hosts) require SSL. rejectUnauthorized:false
+// keeps this working without needing to install a CA bundle.
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl:
-    process.env.NODE_ENV === "production" || process.env.DATABASE_URL?.includes("supabase")
+    process.env.NODE_ENV === "production" || process.env.DATABASE_URL?.includes("neon.tech")
       ? { rejectUnauthorized: false }
       : false,
 });

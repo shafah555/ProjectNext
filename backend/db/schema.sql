@@ -1,5 +1,7 @@
 -- ProjectNext database schema
--- Run this in the Supabase SQL Editor (Project -> SQL Editor -> New query)
+-- Apply it either by:
+--   1) Running `npm run db:migrate` from the backend/ folder (uses DATABASE_URL), or
+--   2) Pasting this file into the Neon Console -> SQL Editor and running it
 
 create extension if not exists "pgcrypto";
 
