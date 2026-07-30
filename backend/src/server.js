@@ -15,10 +15,17 @@ const app = express();
 const server = http.createServer(app);
 
 // Normalize: trim whitespace, strip stray quotes (common when pasting into
-// a dashboard env var field), and drop any trailing slash so
-// "https://foo.vercel.app/" and "https://foo.vercel.app" both match.
+// a dashboard env var field), drop any trailing slash, and add a scheme if
+// one is missing (e.g. someone pastes "myapp.vercel.app" instead of
+// "https://myapp.vercel.app" into Render's Environment tab — the browser's
+// real Origin header always includes the scheme, so without this the
+// comparison below would never match and every request gets CORS-blocked).
 function normalizeOrigin(o) {
-  return o.trim().replace(/^['"]|['"]$/g, "").replace(/\/+$/, "");
+  let val = o.trim().replace(/^['"]|['"]$/g, "").replace(/\/+$/, "");
+  if (val && !/^https?:\/\//i.test(val)) {
+    val = `https://${val}`;
+  }
+  return val;
 }
 
 const allowedOrigins = (
