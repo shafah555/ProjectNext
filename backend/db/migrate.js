@@ -13,8 +13,14 @@ async function main() {
     process.exit(1);
   }
 
+  // Same fix as src/config/db.js: strip sslmode/channel_binding so newer `pg`
+  // versions don't silently force strict cert verification over rejectUnauthorized:false.
+  const url = new URL(process.env.DATABASE_URL);
+  url.searchParams.delete("sslmode");
+  url.searchParams.delete("channel_binding");
+
   const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: url.toString(),
     ssl: { rejectUnauthorized: false }, // required by Neon
   });
 
