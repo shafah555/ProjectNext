@@ -2,7 +2,10 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "https://projectnext-qzwa.onrender.com",
-  timeout: 15000, // 15 s — covers Render free-tier cold-start wake-up
+  // 45 s — Render free-tier cold start (~50s worst case) can stack with Neon's
+  // own compute auto-suspend/wake (a few extra seconds on the first query),
+  // so 15s was timing out before either had a chance to finish waking up.
+  timeout: 45000,
 });
 
 api.interceptors.request.use((config) => {
